@@ -11,8 +11,8 @@ describe('cogent-retry', function () {
   var timeoutRequests = 0
   var uri = "http://localhost:"
 
-  app.use(route('/', error))
-  app.use(route('/server-timeout', st))  
+  app.use(route.get('/', error))
+  app.use(route.get('/server-timeout', st))  
 
   function* error () {
     requests++;
