@@ -35,7 +35,8 @@
     "mocha": "^1.6",
     "should": "^3.0",
     "gnode": "~0.0.6",
-    "proxy": "~0.2.1"
+    "proxy": "~0.2.1",
+    "koa-route": "~1.0.2"
   },
   "peerDependencies": {
     "co": "3"
