@@ -8,15 +8,23 @@ describe('cogent-retry', function () {
 
   var app = koa()
   var requests = 0
+  var timeoutRequests = 0
   var uri = "http://localhost:"
 
   app.use(route('/', error))
+  app.use(route('/server-timeout', st))  
 
   function* error () {
     requests++;
     if (requests < 4) this.status = 503
     else this.status = 204	
-  }	
+  }
+
+  function* st () {
+    timeoutRequests++;
+    if (timeoutRequests < 2) this.timeout = 1
+    else this.status = 204	
+  }  	
    
   it('server should start', function (done) {
     app.listen(function (err) {
@@ -30,7 +38,14 @@ describe('cogent-retry', function () {
   	var res = yield* request(uri, {
   	  retries: 4	
   	})
-  	res.statusCode.should equal(204)
+  	res.statusCode.should.equal(204)
   }))
+
+  it('should retry on aerver timeout', co(function* () {
+  	var res = yield* request(uri + '/server-timeout', {
+  	  retries: 2	
+  	})
+  	res.statusCode.should.equal(204)
+  }))  
 })
 
